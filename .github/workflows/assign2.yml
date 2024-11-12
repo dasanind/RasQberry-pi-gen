@@ -17,5 +17,5 @@ jobs:
         uses: jaydee029/issue_assignment_bot@v1.1.7
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          maintainers: '' # list of maintainers with comma separated like 'takanome-dev,octocat'
-          # learn more about the inputs below ⬇
+          # Commands to run
+          commands: /assign
