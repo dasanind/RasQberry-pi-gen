@@ -1,0 +1,78 @@
+name: Build Raspberry Pi Image
+
+on:
+  push:
+    branches:
+      - 30-sw-platform
+  workflow_dispatch:
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v3
+        with:
+          repository: "rishimathur14/rasqberry-images"  # Replace with target repository
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release in Target Repository
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: "v1.0"  # Update as needed
+          release_name: "Raspberry Pi Image"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Print branch details
+        run: |
+          echo "Branch details:"
+          git branch --show-current  # Print the current branch name
+          git status                 # Show the status of the working directory   
+          
+      - name: setraspiconfig
+        uses: usimd/pi-gen-action@v1
+        id: pi-gen-build
+        with:
+          apt-proxy: ''
+          compression: xz
+          compression-level: 8
+          disable-first-boot-user-rename: 0
+          pi-gen-repository: rishimathur14/RasQberry-pi-gen
+          pi-gen-version: arm64
+          docker-opts: ''
+          enable-noobs: false
+          enable-ssh: 0
+          export-last-stage-only: true
+          extra-host-dependencies: ''
+          extra-host-modules: ''
+          github-token: ${{ secrets.SECRET_GITHUB_TOKEN }}
+          hostname: raspberrypi
+          image-name: 'rasqberry-two'
+          increase-runner-disk-size: true
+          keyboard-keymap: gb
+          keyboard-layout: English (UK)
+          locale: en_GB.UTF-8
+          password: 'Qiskit1!'
+          pi-gen-release: Raspberry Pi Qiskit Release
+          pubkey-only-ssh: 0
+          stage-list: stage0 stage1 stage2 stage3 stage4 stage5
+          timezone: Europe/London
+          verbose-output: false
+      - name: Set dynamic asset path and name
+        id: set_output
+        run: |
+          # Find the file dynamically in the 'deploy' directory
+          FILE_PATH= ${{steps.pi-gen-build.outputs.image-path }}
+          FILE_NAME=$(basename "$FILE_PATH")
+          echo "asset_path=$FILE_PATH" >> $GITHUB_ENV
+          echo "asset_name=$FILE_NAME" >> $GITHUB_ENV    
+      - name: Upload Release Asset to Target Repository
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.pi-gen-build.outputs.image-path }}
+          asset_name: ${{ env.asset_name }}
+          asset_content_type: application/x-xz
