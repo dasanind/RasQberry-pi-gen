@@ -72,7 +72,7 @@ jobs:
           pubkey-only-ssh: 0
           stage-list: stage0 stage1 stage2 stage3 stage4 stage5
           timezone: Europe/London
-          verbose-output: false
+          verbose-output: true
       - name: Set dynamic asset path and name
         id: set_output
         run: |
