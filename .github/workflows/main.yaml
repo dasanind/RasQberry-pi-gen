@@ -28,16 +28,16 @@ jobs:
       - name: Check install!
         run: cosign version
         
-      - name: Create Release in Target Repository
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: "v1.0"  # Update as needed
-          release_name: "Raspberry Pi Image"
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Create Release in Target Repository
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   with:
+      #     tag_name: "v1.0"  # Update as needed
+      #     release_name: "Raspberry Pi Image"
+      #     draft: false
+      #     prerelease: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print branch details
         run: |
           echo "Branch details:"
