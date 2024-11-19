@@ -52,7 +52,7 @@ jobs:
           compression: xz
           compression-level: 8
           disable-first-boot-user-rename: 0
-          pi-gen-repository: rishimathur14/RasQberry-pi-gen
+          pi-gen-repository: dasanind/RasQberry-pi-gen
           pi-gen-version: arm64
           docker-opts: ''
           enable-noobs: false
