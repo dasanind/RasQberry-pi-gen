@@ -15,7 +15,7 @@ jobs:
       - name: Checkout target repository
         uses: actions/checkout@v3
         with:
-          repository: "github.com/dasanind/RasQberry-pi-gen"  # Replace with target repository
+          repository: "dasanind/RasQberry-pi-gen"  # Replace with target repository
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release in Target Repository
         id: create_release
