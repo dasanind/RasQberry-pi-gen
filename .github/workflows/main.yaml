@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - arm64
-  workflow_dispatch:
+  # workflow_dispatch:
 
 jobs:
   build:
@@ -15,9 +15,19 @@ jobs:
     steps:
       - name: Checkout target repository
         uses: actions/checkout@v3
+        # with:
+        #   repository: "dasanind/RasQberry-pi-gen"  # Replace with target repository
+        #   token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3.5.0
         with:
-          repository: "dasanind/RasQberry-pi-gen"  # Replace with target repository
-          token: ${{ secrets.GITHUB_TOKEN }}
+          cosign-release: 'v2.2.4'
+      - name: Check install!
+        run: cosign version
+        
       - name: Create Release in Target Repository
         id: create_release
         uses: actions/create-release@v1
