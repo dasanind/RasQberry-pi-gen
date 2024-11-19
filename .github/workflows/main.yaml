@@ -21,7 +21,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.date.outputs.date }} #  "v1.0"  Update as needed
+          tag_name: "v1.0" #    Update as needed
           release_name: "Raspberry Pi Image"
           draft: false
           prerelease: false
