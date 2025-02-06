@@ -23,7 +23,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
-          ref: "v2.1.x"
+          ref: "v2.x"
 
       - name: "Rasqberry: Get current version"
         id: current-version
