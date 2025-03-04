@@ -45,6 +45,50 @@ jobs:
           tag: "v${{ github.event.inputs.version }} --force"
           tag_push: "--force"
           push: true
+
+  release:
+    name: Create Release
+    needs: rasqberry-push-version-number
+    runs-on: ubuntu-latest
+    outputs:
+      id: ${{ steps.create-release.outputs.id }}
+      date: ${{ steps.base-name.outputs.date }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: "v2.1.x"
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: latest_tag
+        shell: bash
+        run: |
+          echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v1
+        id: changelog
+        with:
+          config: ./cliff-release.toml
+          args: ${{ steps.latest_tag.outputs.TAG_NAME }}..HEAD
+
+      - name: Create empty release
+        id: create-release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "rasqberry-v${{ github.event.inputs.version }}"
+          tag_name: v${{ github.event.inputs.version }}
+          body: ${{ steps.changelog.outputs.content }}
+          draft: true
+
+      - name: Create Date
+        id: base-name
+        if: always()
+        shell: bash
+        run: |
+          NOW="$(date +"%Y-%m-%d")"
+          echo "date=${NOW}" >> $GITHUB_OUTPUT
 #  build:
 #    # runs-on: self-hosted
 #    runs-on: ubuntu-latest
