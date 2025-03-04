@@ -1,10 +1,9 @@
-
 name: Rasqberry Pi Image Release
 
 on:
-  push:
-    branches:
-      - arm64
+  # push:
+  #   branches:
+  #     - arm64
   workflow_dispatch:
     inputs:
       version:
