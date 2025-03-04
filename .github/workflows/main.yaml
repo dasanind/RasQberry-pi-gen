@@ -108,7 +108,6 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-apt-get-
 
-
       - name: Print branch details
         run: |
          echo "Branch details:"
