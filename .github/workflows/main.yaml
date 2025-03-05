@@ -10,6 +10,12 @@ on:
         type: string
         description: New version number in X.Y.Z
         required: true
+
+# Use `bash --noprofile --norc -exo pipefail` by default for all `run` steps in this workflow:
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#defaultsrun
+defaults:
+  run:
+    shell: bash --noprofile --norc -exo pipefail {0}
 jobs:
   rasqberry-push-version-number:
     name: "Rasqberry: Push version number"
