@@ -68,10 +68,6 @@ jobs:
       - name: Check install!
         run: cosign version
 
-      - name: Display all outputs as JSON
-        run: |
-          echo "${{ toJSON(steps.captureStatus.outputs) }}"
-
   release:
     name: Create Release
     needs: rasqberry-push-version-number
@@ -97,6 +93,7 @@ jobs:
 
       - name: Print branch details
         id: branch-details
+        shell: bash
         run: |
           {
             "branch_name=$(git branch --show-current)"
