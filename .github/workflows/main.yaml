@@ -99,14 +99,14 @@ jobs:
       - run: |
           echo "${{ steps.branch-details.outputs.branch_name }}"
 
-      - name: Print branch status
-        id: branch-status
-        shell: bash
-        run: |
-          status=$(echo $(git status) | tr '\n' ' ')
-          echo "branch_status=$status" >> $GITHUB_OUTPUT
-      - run: |
-          echo "${{ steps.branch-details.outputs.branch_status }}"
+#      - name: Print branch status
+#        id: branch-status
+#        shell: bash
+#        run: |
+#          status=$(echo $(git status) | tr '\n' ' ')
+#          echo "branch_status=$status" >> $GITHUB_OUTPUT
+#      - run: |
+#          echo "${{ steps.branch-details.outputs.branch_status }}"
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
@@ -132,17 +132,27 @@ jobs:
         run: |
           NOW="$(date +"%Y-%m-%d")"
           echo "date=${NOW}" >> $GITHUB_OUTPUT
-#  build:
-#    # runs-on: self-hosted
-#    needs: [release]
-#    runs-on: ubuntu-latest
-#    outputs:
-#      base_name: ${{ steps.move-image.outputs.base_name }}
-#    # strategy:
-#      # fail-fast: false
-#      # matrix:
-#      #   config: ${{ fromJson(needs.matrix.outputs.matrix) }}
-#    steps:
+      - run: |
+          echo "${{ steps.base-name.outputs.NOW }}"
+
+      - name: Create Matrix
+        id: set-matrix
+        run: |
+          PY_INT=$(command -v python3)
+          CONFIG="${{ github.workspace }}/config"
+          GROUP="arm64"
+          $PY_INT ${{ github.workspace }}/.github/scripts/setup_matrix.py -c $CONFIG -g $GROUP --git
+  build:
+    # runs-on: self-hosted
+    needs: [release, matrix]
+    runs-on: ubuntu-latest
+    outputs:
+      base_name: ${{ steps.move-image.outputs.base_name }}
+     strategy:
+       fail-fast: false
+       matrix:
+         config: ${{ fromJson(needs.matrix.outputs.matrix) }}
+    steps:
 #      - name: Cache aptitude
 #        uses: actions/cache@v2
 #        with:
@@ -151,9 +161,11 @@ jobs:
 #          restore-keys: |
 #            ${{ runner.os }}-apt-get-
 
-     #  - name: setraspiconfig
-     #    uses: usimd/pi-gen-action@v1
-     #    id: pi-gen-build
+       - name: setraspiconfig
+         uses: usimd/pi-gen-action@v1
+         id: pi-gen-build
+         with:
+           config: ${{ matrix.config }}
      #    with:
      #      apt-proxy: ''
      #      compression: xz
