@@ -134,12 +134,23 @@ jobs:
           echo "date=${NOW}" >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.base-name.outputs.NOW }}"
+  matrix:
+    name: Create Matrix
+    needs: release
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+#        with:
+#          ref: v2.1.x
 
       - name: Create Matrix
         id: set-matrix
         run: |
           PY_INT=$(command -v python3)
-          CONFIG="${{ github.workspace }}/config.ym"
+          CONFIG="${{ github.workspace }}/config"
           GROUP="arm-64"
           $PY_INT ${{ github.workspace }}/.github/scripts/setup_matrix.py -c $CONFIG -g $GROUP --git
 
