@@ -38,7 +38,6 @@ jobs:
         run: |
           version=$(cat ./src/version)
           echo "version=${version}" >> $GITHUB_OUTPUT
-          echo GITHUB_OUTPUT
 
       - name: "Rasqberry: Add version file"
         if: steps.current-version.outputs.version != github.event.inputs.version
@@ -65,6 +64,10 @@ jobs:
           cosign-release: 'v2.2.4'
       - name: Check install!
         run: cosign version
+
+      - name: Display all outputs as JSON
+        run: |
+          echo "${{ toJSON(steps.captureStatus.outputs) }}"
 
   release:
     name: Create Release
