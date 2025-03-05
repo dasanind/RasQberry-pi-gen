@@ -80,9 +80,8 @@ jobs:
 
       - name: Print branch details
         run: |
-          echo "Branch details:"
-        git branch --show-current  # Print the current branch name
-        git status                 # Show the status of the working directory
+          echo "Branch details: git branch --show-current"
+#        git status                 # Show the status of the working directory
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
@@ -126,12 +125,6 @@ jobs:
 #          key: ${{ runner.os }}-apt-get-${{ hashFiles('**/apt.txt') }}
 #          restore-keys: |
 #            ${{ runner.os }}-apt-get-
-
-      - name: Print branch details
-        run: |
-         echo "Branch details:"
-         git branch --show-current  # Print the current branch name
-         git status                 # Show the status of the working directory
 
      #  - name: setraspiconfig
      #    uses: usimd/pi-gen-action@v1
