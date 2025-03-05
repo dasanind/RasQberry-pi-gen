@@ -107,17 +107,17 @@ jobs:
         run: |
           NOW="$(date +"%Y-%m-%d")"
           echo "date=${NOW}" >> $GITHUB_OUTPUT
-  build:
-    # runs-on: self-hosted
-    needs: [release]
-    runs-on: ubuntu-latest          
-    outputs:
-      base_name: ${{ steps.move-image.outputs.base_name }}
-    # strategy:
-      # fail-fast: false
-      # matrix:
-      #   config: ${{ fromJson(needs.matrix.outputs.matrix) }}
-    steps:
+#  build:
+#    # runs-on: self-hosted
+#    needs: [release]
+#    runs-on: ubuntu-latest
+#    outputs:
+#      base_name: ${{ steps.move-image.outputs.base_name }}
+#    # strategy:
+#      # fail-fast: false
+#      # matrix:
+#      #   config: ${{ fromJson(needs.matrix.outputs.matrix) }}
+#    steps:
 #      - name: Cache aptitude
 #        uses: actions/cache@v2
 #        with:
