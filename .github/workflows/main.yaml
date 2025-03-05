@@ -103,7 +103,6 @@ jobs:
         id: branch-status
         shell: bash
         run: |
-#          status=$(git status)
           status=$(echo $(git status) | tr '\n' ' ')
           echo "branch_status=$status" >> $GITHUB_OUTPUT
       - run: |
