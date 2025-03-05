@@ -142,8 +142,8 @@ jobs:
           CONFIG="${{ github.workspace }}/config"
           GROUP="arm64"
           $PY_INT ${{ github.workspace }}/.github/scripts/setup_matrix.py -c $CONFIG -g $GROUP --git
+
   build:
-    # runs-on: self-hosted
     needs: [release, matrix]
     runs-on: ubuntu-latest
     outputs:
