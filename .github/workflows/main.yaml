@@ -133,7 +133,7 @@ jobs:
           NOW="$(date +"%Y-%m-%d")"
           echo "date=${NOW}" >> $GITHUB_OUTPUT
       - run: |
-          echo "${{ steps.base-name.outputs.NOW }}"
+          echo "${{ steps.base-name.outputs.date }}"
   matrix:
     name: Create Matrix
     needs: release
@@ -150,8 +150,8 @@ jobs:
         id: set-matrix
         run: |
           PY_INT=$(command -v python3)
-          CONFIG="${{ github.workspace }}/config"
-          GROUP=""
+          CONFIG="${{ github.workspace }}/.github/workflow_config.yml"
+          GROUP="release"
           $PY_INT ${{ github.workspace }}/.github/scripts/setup_matrix.py -c $CONFIG -g $GROUP --git
 
   build:
