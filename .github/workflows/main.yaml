@@ -158,12 +158,12 @@ jobs:
   build:
     needs: [release, matrix]
     runs-on: ubuntu-latest
-    outputs:
-      base_name: ${{ steps.move-image.outputs.base_name }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config: ${{ fromJson(needs.matrix.outputs.matrix) }}
+#    outputs:
+#      base_name: ${{ steps.move-image.outputs.base_name }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        config: ${{ fromJson(needs.matrix.outputs.matrix) }}
 
     steps:
       - name: setraspiconfig
