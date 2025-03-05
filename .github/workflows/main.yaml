@@ -97,11 +97,11 @@ jobs:
 
       - name: Print branch details
         id: branch-details
-          run: |
-            {
+        run: |
+          {
             "branch_name=$(git branch --show-current)"
             "status=$(git status)"
-            } >> $GITHUB_OUTPUT
+          } >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.branch-details.outputs.branch_name }}"
           echo "${{ steps.branch-details.outputs.status }}"
