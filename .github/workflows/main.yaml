@@ -16,6 +16,7 @@ on:
 defaults:
   run:
     shell: bash --noprofile --norc -exo pipefail {0}
+
 jobs:
   rasqberry-push-version-number:
     name: "Rasqberry: Push version number"
@@ -37,6 +38,7 @@ jobs:
         run: |
           version=$(cat ./src/version)
           echo "version=${version}" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
 
       - name: "Rasqberry: Add version file"
         if: steps.current-version.outputs.version != github.event.inputs.version
