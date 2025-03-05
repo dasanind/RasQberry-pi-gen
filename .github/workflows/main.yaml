@@ -95,13 +95,14 @@ jobs:
         id: branch-details
         shell: bash
         run: |
-          {
-            "branch_name=${GITHUB_REF##*/}"
-            "status=$(git status)"
-          } >> $GITHUB_OUTPUT
+          echo "branch_name=$(git branch --show-current)" >> $GITHUB_OUTPUT
+#          {
+#            "branch_name=$(git branch --show-current)"
+#            "status=$(git status)"
+#          } >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.branch-details.outputs.branch_name }}"
-          echo "${{ steps.branch-details.outputs.status }}"
+#          echo "${{ steps.branch-details.outputs.status }}"
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
