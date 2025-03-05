@@ -38,7 +38,7 @@ jobs:
         run: |
           version=$(cat ./src/version)
           echo "version=${version}" >> $GITHUB_OUTPUT
-          echo $GITHUB_OUTPUT
+          echo GITHUB_OUTPUT
 
       - name: "Rasqberry: Add version file"
         if: steps.current-version.outputs.version != github.event.inputs.version
