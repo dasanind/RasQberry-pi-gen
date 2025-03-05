@@ -151,7 +151,7 @@ jobs:
         run: |
           PY_INT=$(command -v python3)
           CONFIG="${{ github.workspace }}/config"
-          GROUP="arm-64"
+          GROUP=""
           $PY_INT ${{ github.workspace }}/.github/scripts/setup_matrix.py -c $CONFIG -g $GROUP --git
 
   build:

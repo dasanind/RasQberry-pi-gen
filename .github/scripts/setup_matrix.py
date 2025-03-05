@@ -27,7 +27,7 @@ def main():
     parser.add_argument('-g', '--group',
                         help='Specify group in your configuration file.\
                         \nFor example \'-g  buildtest\'',
-                        required=True)
+                        required=False)
     parser.add_argument('--git',
                         action='store_true',
                         help='Push output to git environment variables')
