@@ -11,11 +11,11 @@ on:
         description: New version number in X.Y.Z
         required: true
 
-# Use `bash --noprofile --norc -exo pipefail` by default for all `run` steps in this workflow:
-# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#defaultsrun
-defaults:
-  run:
-    shell: bash --noprofile --norc -exo pipefail {0}
+## Use `bash --noprofile --norc -exo pipefail` by default for all `run` steps in this workflow:
+## https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#defaultsrun
+#defaults:
+#  run:
+#    shell: bash --noprofile --norc -exo pipefail {0}
 
 jobs:
   rasqberry-push-version-number:
@@ -34,7 +34,7 @@ jobs:
 
       - name: "Rasqberry: Get current version"
         id: current-version
-        shell: bash -ileo pipefail {0}
+        shell: bash
         run: |
           version=$(cat ./src/version)
           echo "version=${version}" >> $GITHUB_OUTPUT
