@@ -34,7 +34,7 @@ jobs:
 
       - name: "Rasqberry: Get current version"
         id: current-version
-        shell: bash
+        shell: bash -ileo pipefail {0}
         run: |
           version=$(cat ./src/version)
           echo "version=${version}" >> $GITHUB_OUTPUT
