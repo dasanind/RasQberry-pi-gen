@@ -92,10 +92,19 @@ jobs:
         run: |
           echo "TAG_NAME=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
 
+      - run: |
+          echo "${{ steps.latest_tag.outputs.TAG_NAME }}"      
+
       - name: Print branch details
-        run: |
-          echo "Branch details:" git branch --show-current
-#        git status                 # Show the status of the working directory
+        id: branch-details
+          run: |
+            {
+            "branch_name=$(git branch --show-current)"
+            "status=$(git status)"
+            } >> $GITHUB_OUTPUT
+      - run: |
+          echo "${{ steps.branch-details.outputs.branch_name }}"
+          echo "${{ steps.branch-details.outputs.status }}"
 
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
