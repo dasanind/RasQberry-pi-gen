@@ -80,7 +80,7 @@ jobs:
 
       - name: Print branch details
         run: |
-          echo "Branch details: git branch --show-current"
+          echo "Branch details:" git branch --show-current
 #        git status                 # Show the status of the working directory
 
       - name: Generate a changelog
