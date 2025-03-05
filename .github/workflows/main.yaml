@@ -100,19 +100,19 @@ jobs:
       # matrix:
       #   config: ${{ fromJson(needs.matrix.outputs.matrix) }}
     steps:
-      - name: Cache aptitude
-        uses: actions/cache@v2
-        with:
-          path: repository/src/workspace/aptcache
-          key: ${{ runner.os }}-apt-get-${{ hashFiles('**/apt.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-apt-get-
+#      - name: Cache aptitude
+#        uses: actions/cache@v2
+#        with:
+#          path: repository/src/workspace/aptcache
+#          key: ${{ runner.os }}-apt-get-${{ hashFiles('**/apt.txt') }}
+#          restore-keys: |
+#            ${{ runner.os }}-apt-get-
 
-     #  - name: Print branch details
-     #    run: |
-     #     echo "Branch details:"
-     #     git branch --show-current  # Print the current branch name
-     #     git status                 # Show the status of the working directory
+      - name: Print branch details
+        run: |
+         echo "Branch details:"
+         git branch --show-current  # Print the current branch name
+         git status                 # Show the status of the working directory
 
      #  - name: setraspiconfig
      #    uses: usimd/pi-gen-action@v1
