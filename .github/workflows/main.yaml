@@ -96,7 +96,7 @@ jobs:
         shell: bash
         run: |
           {
-            "branch_name=$(git branch --show-current)"
+            "branch_name=${GITHUB_REF##*/}"
             "status=$(git status)"
           } >> $GITHUB_OUTPUT
       - run: |
