@@ -148,6 +148,7 @@ jobs:
 
       - name: Create Matrix
         id: set-matrix
+        shell: bash
         run: |
           PY_INT=$(command -v python3)
           CONFIG="${{ github.workspace }}/.github/workflow_config.yml"

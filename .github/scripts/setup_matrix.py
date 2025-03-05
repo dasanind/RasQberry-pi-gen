@@ -38,6 +38,7 @@ def main():
         try:
             with open(config_file, 'r') as config:
                 data = yaml.safe_load(config)
+                print("data", data)
                 # Check if group is present
                 if not setup_group in data:
                     with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as gitsum:
@@ -63,7 +64,6 @@ def main():
             # Checks if file exists, else raises error.
             with open(config_file, 'r') as config:
                 data = yaml.safe_load(config)
-                print("data", data)
                 # Check if group is present
                 if not setup_group in data:
                     raise Exception(
