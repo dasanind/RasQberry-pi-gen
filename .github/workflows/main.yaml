@@ -103,7 +103,9 @@ jobs:
         id: branch-status
         shell: bash
         run: |
-          echo "branch_status=$(git status)" >> $GITHUB_OUTPUT
+#          status=$(git status)
+          status=$(echo $(git status) | tr '\n' ' ')
+          echo "branch_status=$status" >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.branch-details.outputs.branch_status }}"
 
