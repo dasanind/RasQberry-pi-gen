@@ -21,7 +21,7 @@ jobs:
       - name: "Rasqberry: Clone Repository"
         uses: actions/checkout@v4
         with:
-          repository: "dasanind/RasQberry-pi-gen"
+          repository: ${{ github.repository }}
           token: ${{ secrets.GITHUB_TOKEN }}
           persist-credentials: true
 #          ref: "30-sw-platform"
@@ -154,7 +154,7 @@ jobs:
 #        config: ${{ fromJson(needs.matrix.outputs.matrix) }}
 
     steps:
-      - name: setraspiconfig
+      - name: Start build with raspiconfig
         uses: usimd/pi-gen-action@v1
         id: pi-gen-build
         with:
@@ -163,7 +163,7 @@ jobs:
           compression: xz
           compression-level: 8
           disable-first-boot-user-rename: 0
-          pi-gen-repository: dasanind/RasQberry-pi-gen
+          pi-gen-repository: ${{ github.repository }}
           pi-gen-version: arm64
           docker-opts: ''
           enable-noobs: false
