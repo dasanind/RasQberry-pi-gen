@@ -11,12 +11,6 @@ on:
         description: New version number in X.Y.Z
         required: true
 
-## Use `bash --noprofile --norc -exo pipefail` by default for all `run` steps in this workflow:
-## https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#defaultsrun
-#defaults:
-#  run:
-#    shell: bash --noprofile --norc -exo pipefail {0}
-
 jobs:
   rasqberry-push-version-number:
     name: "Rasqberry: Push version number"
@@ -100,15 +94,6 @@ jobs:
       - run: |
           echo "${{ steps.branch-details.outputs.branch_name }}"
 
-#      - name: Print branch status
-#        id: branch-status
-#        shell: bash
-#        run: |
-#          status=$(echo $(git status) | tr '\n' ' ')
-#          echo "branch_status=$status" >> $GITHUB_OUTPUT
-#      - run: |
-#          echo "${{ steps.branch-details.outputs.branch_status }}"
-
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
         id: changelog
@@ -125,7 +110,6 @@ jobs:
           tag_name: v${{ github.event.inputs.version }}
           body: ${{ steps.changelog.outputs.content }}
           make_latest: true
-#          draft: true
       - run: |
           echo "${{ steps.create-release.outputs.upload_url }}"
 
@@ -138,79 +122,77 @@ jobs:
           echo "date=${NOW}" >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.base-name.outputs.date }}"
-  matrix:
-    name: Create Matrix
-    needs: release
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-#        with:
-#          ref: v2.1.x
 
-      - name: Create Matrix
-        id: set-matrix
-        shell: bash
-        run: |
-          PY_INT=$(command -v python3)
-          CONFIG="${{ github.workspace }}/.github/workflow_config.yml"
-          GROUP="release"
-          $PY_INT ${{ github.workspace }}/.github/scripts/setup_matrix.py -c $CONFIG -g $GROUP --git
+#  matrix:
+#    name: Create Matrix
+#    needs: release
+#    runs-on: ubuntu-latest
+#    outputs:
+#      matrix: ${{ steps.set-matrix.outputs.matrix }}
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Create Matrix
+#        id: set-matrix
+#        shell: bash
+#        run: |
+#          PY_INT=$(command -v python3)
+#          CONFIG="${{ github.workspace }}/.github/workflow_config.yml"
+#          GROUP="release"
+#          $PY_INT ${{ github.workspace }}/.github/scripts/setup_matrix.py -c $CONFIG -g $GROUP --git
 
   build:
     name: Build Image
-    needs: [release, matrix]
+    needs: [release]
     runs-on: ubuntu-latest
-    outputs:
-      base_name: ${{ steps.move-image.outputs.base_name }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config: ${{ fromJson(needs.matrix.outputs.matrix) }}
+#    outputs:
+#      base_name: ${{ steps.move-image.outputs.base_name }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        config: ${{ fromJson(needs.matrix.outputs.matrix) }}
 
     steps:
       - name: setraspiconfig
         uses: usimd/pi-gen-action@v1
         id: pi-gen-build
         with:
-          config: ${{ matrix.config }}
-#          apt-proxy: ''
-#          compression: xz
-#          compression-level: 8
-#          disable-first-boot-user-rename: 0
-#          pi-gen-repository: dasanind/RasQberry-pi-gen
-#          pi-gen-version: arm64
-#          docker-opts: ''
-#          enable-noobs: false
-#          enable-ssh: 0
-#          export-last-stage-only: true
-#          extra-host-dependencies: ''
-#          extra-host-modules: ''
-#          github-token: ${{ secrets.GITHUB_TOKEN }}
-#          hostname: raspberrypi
-#          image-name: 'rasqberry-two'
-#          increase-runner-disk-size: true
-#          keyboard-keymap: gb
-#          keyboard-layout: English (UK)
-#          locale: en_GB.UTF-8
-#          password: 'Qiskit1!'
-#          pi-gen-release: Raspberry Pi Qiskit Release
-#          pubkey-only-ssh: 0
-#          stage-list: stage0 stage1 stage2 stage3 stage4 stage5
-##          stage-list: stage0 stage1 stage2 stage3 stage4 stage5
-#          timezone: Europe/London
-#          verbose-output: true
+#          config: ${{ matrix.config }}
+          apt-proxy: ''
+          compression: xz
+          compression-level: 8
+          disable-first-boot-user-rename: 0
+          pi-gen-repository: dasanind/RasQberry-pi-gen
+          pi-gen-version: arm64
+          docker-opts: ''
+          enable-noobs: false
+          enable-ssh: 0
+          export-last-stage-only: true
+          extra-host-dependencies: ''
+          extra-host-modules: ''
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          hostname: raspberrypi
+          image-name: 'rasqberry-two'
+          increase-runner-disk-size: true
+          keyboard-keymap: gb
+          keyboard-layout: English (UK)
+          locale: en_GB.UTF-8
+          password: 'Qiskit1!'
+          pi-gen-release: Raspberry Pi Qiskit Release
+          pubkey-only-ssh: 0
+          stage-list: stage0 stage1 stage2 stage3 stage4 stage5
+          timezone: Europe/London
+          verbose-output: true
 
       - name: Set dynamic asset path and name
-        id: set-output
+#        id: set-output
         run: |
           mkdir -p deploy
           # Copy the image to the deploy folder
           cp ${{ steps.pi-gen-build.outputs.image-path }} deploy/
           # Find the file dynamically in the 'deploy' directory
-          FILE_PATH=$(find deploy -type f -name "*.img.xz" | head -n 1)
+          FILE_PATH=$(find deploy -type f -name "*full.img.xz" | head -n 1)
           FILE_NAME=$(basename "${{steps.pi-gen-build.outputs.image-path}}")
           echo "asset_path=$FILE_PATH" >> $GITHUB_ENV
           echo "asset_name=$FILE_NAME" >> $GITHUB_ENV
