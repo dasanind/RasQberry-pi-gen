@@ -1,15 +1,16 @@
 name: Rasqberry Pi Image Release
 
 on:
-  # push:
-  #   branches:
-  #     - arm64
+   push:
+     branches:
+       - 30-sw-platform
   workflow_dispatch:
     inputs:
       version:
         type: string
         description: New version number in X.Y.Z
-        required: true
+        required: false
+        default: ''
 
 jobs:
   rasqberry-push-version-number:
@@ -26,6 +27,16 @@ jobs:
           persist-credentials: true
 #          ref: "30-sw-platform"
 
+      - name: Create Date
+        id: create-date
+        if: always()
+        shell: bash
+        run: |
+          NOW="$(date +"%Y-%m-%d")"
+          echo "date=${NOW}" >> $GITHUB_OUTPUT
+      - run: |
+          echo "${{ steps.create-date.outputs.date }}"
+
       - name: "Rasqberry: Get current version"
         id: current-version
         shell: bash
@@ -40,7 +51,8 @@ jobs:
         if: steps.current-version.outputs.version != github.event.inputs.version
         shell: bash
         run: |
-          echo ${{ github.event.inputs.version }} > ./src/version
+          echo ${{ github.event.inputs.version || "alpha" + ${{ steps.create-date.outputs.date 
+          }}}} > ./src/version
 
       - name: "Rasqberry: git add & commit & tag & push"
         uses: EndBug/add-and-commit@v9
@@ -68,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       id: ${{ steps.create-release.outputs.id }}
-      date: ${{ steps.base-name.outputs.date }}
+#      date: ${{ steps.base-name.outputs.date }}
       upload_url: ${{ steps.create-release.outputs.upload_url }}
     steps:
       - name: Checkout
@@ -113,34 +125,7 @@ jobs:
       - run: |
           echo "${{ steps.create-release.outputs.upload_url }}"
 
-      - name: Create Date
-        id: base-name
-        if: always()
-        shell: bash
-        run: |
-          NOW="$(date +"%Y-%m-%d")"
-          echo "date=${NOW}" >> $GITHUB_OUTPUT
-      - run: |
-          echo "${{ steps.base-name.outputs.date }}"
 
-#  matrix:
-#    name: Create Matrix
-#    needs: release
-#    runs-on: ubuntu-latest
-#    outputs:
-#      matrix: ${{ steps.set-matrix.outputs.matrix }}
-#    steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Create Matrix
-#        id: set-matrix
-#        shell: bash
-#        run: |
-#          PY_INT=$(command -v python3)
-#          CONFIG="${{ github.workspace }}/.github/workflow_config.yml"
-#          GROUP="release"
-#          $PY_INT ${{ github.workspace }}/.github/scripts/setup_matrix.py -c $CONFIG -g $GROUP --git
 
   build:
     name: Build Image
