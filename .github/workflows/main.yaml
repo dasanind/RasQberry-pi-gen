@@ -51,8 +51,13 @@ jobs:
         if: steps.current-version.outputs.version != github.event.inputs.version
         shell: bash
         run: |
-          echo ${{ github.event.inputs.version || ${{ steps.create-date.outputs.date 
-          }}}} > ./src/version
+          if [ -z ${{ github.event.inputs.version }} ]; then
+            echo "alpha-"${{ steps.create-date.outputs.date }} > ./src/version
+          else
+            echo ${{ github.event.inputs.version }} > ./src/version
+          fi
+#          echo ${{ github.event.inputs.version || ${{ steps.create-date.outputs.date
+#          }}}} > ./src/version
 
       - name: "Rasqberry: git add & commit & tag & push"
         uses: EndBug/add-and-commit@v9
