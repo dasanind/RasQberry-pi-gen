@@ -58,6 +58,8 @@ jobs:
             echo "version_num="a${{ github.event.inputs.version }}" >> $GITHUB_ENV
             echo ${{env.version_num}} > ./src/version
           fi
+          env:
+            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 #          echo ${{ github.event.inputs.version || ${{ steps.create-date.outputs.date
 #          }}}} > ./src/version
 
