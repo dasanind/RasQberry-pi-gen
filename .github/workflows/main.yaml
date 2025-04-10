@@ -3,14 +3,14 @@ name: Rasqberry Pi Image Release
 on:
    push:
      branches:
-       - '30-sw-platform'
-  workflow_dispatch:
-    inputs:
-      version:
-        type: string
-        description: New version number in X.Y.Z
-        required: false
-        default: ''
+       - 30-sw-platform
+   workflow_dispatch:
+     inputs:
+       version:
+         type: string
+         description: New version number in X.Y.Z
+         required: false
+         default: ''
 
 jobs:
   rasqberry-push-version-number:
