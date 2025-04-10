@@ -52,9 +52,13 @@ jobs:
         shell: bash
         run: |
           if [ -z ${{ github.event.inputs.version }} ]; then
-            echo "alpha-"${{ steps.create-date.outputs.date }} > ./src/version
+            echo "version_num="alpha-"${{ steps.create-date.outputs.date }}" >> $GITHUB_ENV
+            echo ${{env.version_num}} > ./src/version
+#            echo "alpha-"${{ steps.create-date.outputs.date }} > ./src/version
           else
-            echo ${{ github.event.inputs.version }} > ./src/version
+#            echo ${{ github.event.inputs.version }} > ./src/version
+            echo "version_num="a${{ github.event.inputs.version }}" >> $GITHUB_ENV
+            echo ${{env.version_num}} > ./src/version
           fi
 #          echo ${{ github.event.inputs.version || ${{ steps.create-date.outputs.date
 #          }}}} > ./src/version
@@ -129,8 +133,6 @@ jobs:
           make_latest: true
       - run: |
           echo "${{ steps.create-release.outputs.upload_url }}"
-
-
 
   build:
     name: Build Image
