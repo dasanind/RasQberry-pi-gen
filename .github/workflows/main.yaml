@@ -54,9 +54,7 @@ jobs:
           if [ -z ${{ github.event.inputs.version }} ]; then
             echo "version_num="alpha-"${{ steps.create-date.outputs.date }}" >> $GITHUB_ENV
             echo ${{env.version_num}} > ./src/version
-#            echo "alpha-"${{ steps.create-date.outputs.date }} > ./src/version
           else
-#            echo ${{ github.event.inputs.version }} > ./src/version
             echo "version_num="a${{ github.event.inputs.version }}" >> $GITHUB_ENV
             echo ${{env.version_num}} > ./src/version
           fi
