@@ -53,10 +53,10 @@ jobs:
         run: |
           if [ -z ${{ github.event.inputs.version }} ]; then
             echo "version_num="alpha-"${{ steps.create-date.outputs.date }}" >> $GITHUB_ENV
-            echo ${{env.version_num}} > ./src/version
+            echo "${{env.version_num}}" > ./src/version
           else
             echo "version_num="a${{ github.event.inputs.version }}" >> $GITHUB_ENV
-            echo ${{env.version_num}} > ./src/version
+            echo "${{env.version_num}}" > ./src/version
           fi
           env:
             GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
