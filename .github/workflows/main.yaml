@@ -33,7 +33,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          NOW="$(date +"%Y-%m-%d %H:%M:%S")"
+          NOW="$(date +"%Y-%m-%d::%H:%M:%S")"
           echo "date=${NOW}" >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.create-date.outputs.date }}"
@@ -54,7 +54,7 @@ jobs:
         shell: bash
         run: |
           if [ -z ${{ github.event.inputs.version }} ]; then
-            VERSION_NUMBER="alpha-"${{ steps.create-date.outputs.date }}
+            VERSION_NUMBER=alpha-${{ steps.create-date.outputs.date }}
             echo "version_num=$VERSION_NUMBER" >> $GITHUB_OUTPUT
             echo $VERSION_NUMBER > ./src/version
           else
