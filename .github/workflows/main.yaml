@@ -33,7 +33,7 @@ jobs:
         if: always()
         shell: bash
         run: |
-          NOW="$(date +"%Y-%m-%d::%H:%M:%S")"
+          NOW="$(date +"%Y-%m-%d-%H%M%S")"
           echo "date=${NOW}" >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.create-date.outputs.date }}"
