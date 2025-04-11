@@ -52,15 +52,14 @@ jobs:
         shell: bash
         run: |
           if [ -z ${{ github.event.inputs.version }} ]; then
-            echo "version_num="alpha-"${{ steps.create-date.outputs.date }}" >> $GITHUB_ENV
-            echo "alpha-"${{ steps.create-date.outputs.date }} > ./src/version
+            VERSION_NUMBER="alpha-"${{ steps.create-date.outputs.date }}
+            echo "version_num=$VERSION_NUMBER" >> $GITHUB_ENV
+            echo $VERSION_NUMBER > ./src/version
           else
+            VERSION_NUMBER=${{ github.event.inputs.version }}
             echo "version_num=${{ github.event.inputs.version }}" >> $GITHUB_ENV
             echo ${{ github.event.inputs.version }} > ./src/version
           fi
-
-#          echo ${{ github.event.inputs.version || ${{ steps.create-date.outputs.date
-#          }}}} > ./src/version
 
       - name: "Rasqberry: git add & commit & tag & push"
         uses: EndBug/add-and-commit@v9
